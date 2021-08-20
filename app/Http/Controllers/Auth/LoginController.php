@@ -15,7 +15,9 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        $data['title'] = 'Login';
+
+        return view('auth.login', compact('data'));
     }
 
     /**
@@ -28,13 +30,22 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
+        // Validate the input
         $this->validateLogin($request);
 
-        $response = Http::post('localhost:8000/api/v2/auth/login-employee', $request->all());
+        // Check the employee user from API
+        $response = Http::post(env('API_URL') . '/api/v2/auth/login-employee', $request->all());
+        $res = json_decode($response->body());
 
-        dump($response->body());
+        // Return error if unathorized
+        if ($error = $res->error ?? false)
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors($error);
 
-        dd('break');
+        return redirect()->route('admin.home')
+            ->with('message', 'Login Success')
+            ->withCookie($res->access_token);
     }
 
     /**

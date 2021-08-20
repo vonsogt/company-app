@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    @include('includes.head')
+    @include('partials.head')
 
     @yield('styles')
 </head>
 <body class="d-flex flex-column h-100">
     <main class="flex-shrink-0">
-        @include('includes.header')
+        @include('partials.header')
 
         @yield('content')
     </main>
 
-    @include('includes.footer')
+    @include('partials.footer')
     @yield('scripts')
 </body>
 </html>

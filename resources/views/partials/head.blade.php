@@ -2,7 +2,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Company App - {{ $data['title'] ?? 'Start Bootstrap Template' }}</title>
+<title>
+    {{ isset($data['title']) ? $data['title'] . ' | ' . config('app.name', 'Laravel') : config('app.name', 'Laravel') }}
+</title>
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="{{ asset('vendor/startbootstrap/modern-business/assets/favicon.ico') }}" />
 <!-- Bootstrap icons-->

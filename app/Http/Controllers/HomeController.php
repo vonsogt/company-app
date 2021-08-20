@@ -14,7 +14,7 @@ class HomeController extends Controller
         $data = [];
         if (($company_name = $request->company) != null) {
             // Search company name from api
-            $response = Http::get('localhost:8000/api/v1/company?name=' . $company_name);
+            $response = Http::get(env('API_URL') . '/api/v1/company?name=' . $company_name);
             $body = collect(json_decode($response->body(), true));
 
             $data['company'] = $body;

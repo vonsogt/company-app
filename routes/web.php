@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +25,7 @@ Route::post('login', [LoginController::class, 'login']);
 
 // Logout Routes...
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::prefix('admin')->as('admin.')->group(function () {
+    Route::get('/', [AdminHomeController::class, 'index'])->name('home');
+});
