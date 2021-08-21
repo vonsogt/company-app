@@ -15,5 +15,8 @@
 <!-- Custom styles for this template-->
 <link href="{{ asset('vendor/startbootstrap/sb-admin-2/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+<!-- Custom styles for this page -->
+<link href="{{ asset('vendor/startbootstrap/sb-admin-2/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+
 <!-- Toastr -->
 <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">

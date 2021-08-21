@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Http;
 class LoginController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    /**
      * Show the application's login form.
      *
      * @return \Illuminate\View\View
@@ -34,7 +44,7 @@ class LoginController extends Controller
         $this->validateLogin($request);
 
         // Check the employee user from API
-        $response = Http::post(env('API_URL') . '/api/v2/auth/login-employee', $request->all());
+        $response = Http::post(env('API_URL', 'http://localhost:8000') . '/api/v2/auth/login-employee', $request->all());
         $res = json_decode($response->body());
 
         // Return error if unathorized
@@ -43,9 +53,10 @@ class LoginController extends Controller
                 ->withInput($request->only('email'))
                 ->withErrors($error);
 
-        return redirect()->route('admin.home')
+        // Return response and pass token to cookie
+        return redirect(route('admin.home'))
             ->with('message', 'Login Success')
-            ->withCookie($res->access_token);
+            ->withCookie(cookie('token', $res->access_token, $res->expires_in));
     }
 
     /**
@@ -62,5 +73,18 @@ class LoginController extends Controller
             'email' =>      'required|email',
             'password' =>   'required|string',
         ]);
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    public function logout(Request $request)
+    {
+        \JWTAuth::invalidate(\JWTAuth::getToken());
+
+        return response()->redirectTo(route('login'))->withCookie(cookie('token', null));
     }
 }

@@ -37,6 +37,10 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -51,7 +55,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" href="{{ route('logout') }}">Logout</a>
                 </div>
             </div>
         </div>
@@ -66,6 +70,10 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('vendor/startbootstrap/sb-admin-2/js/sb-admin-2.min.js') }}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{ asset('vendor/startbootstrap/sb-admin-2/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/startbootstrap/sb-admin-2/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <!-- Toastr -->
     <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>

@@ -27,6 +27,17 @@ class RedirectIfAuthenticated
             }
         }
 
+        // Check JWT Token
+        try {
+            if ($request->cookie('token') != "")
+                $request->headers->set('Authorization', 'Bearer ' . $request->cookie('token'));
+            $user = \JWTAuth::parseToken()->authenticate();
+            // Redirect if any jwt token
+            return redirect(RouteServiceProvider::HOME);
+        } catch (\Exception $e) {
+            return $next($request);
+        }
+
         return $next($request);
     }
 }

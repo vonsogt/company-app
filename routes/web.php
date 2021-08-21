@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::redirect('/home', '/admin');
 
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -26,6 +28,14 @@ Route::post('login', [LoginController::class, 'login']);
 // Logout Routes...
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::prefix('admin')->as('admin.')->group(function () {
+// Admin prefix
+Route::prefix('admin')->as('admin.')->middleware('jwt.verify')->group(function () {
+    // Admin HomeController
     Route::get('/', [AdminHomeController::class, 'index'])->name('home');
+
+    // LoginController
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+    // EmployeeController
+    Route::resource('employee', EmployeeController::class);
 });
