@@ -13,10 +13,16 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <small>Welcome To</small><br><h1 class="h4 text-gray-900 mb-4">{{ $data['title'] ?? 'Company App' }}</h1>
                                 </div>
+                                @error('website_link')
+                                    <div class="alert alert-danger" role="alert">
+                                        It's look like there is no company selected.
+                                    </div>
+                                @enderror
                                 <form class="user" method="POST" action="{{ route('login') }}">
                                     @csrf
+                                    <input type="hidden" name="website_link" value="{{ $data['company']['website_link'] ?? null }}">
                                     <div class="form-group">
                                         <input type="email" name="email"
                                             class="form-control form-control-user @error('email') is-invalid @enderror"

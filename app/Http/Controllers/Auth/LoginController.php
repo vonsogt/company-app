@@ -23,9 +23,17 @@ class LoginController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
-        $data['title'] = 'Login';
+        $data = [];
+        if (($company_name = $request->company) != null) {
+            // Search company name from api
+            $response = Http::get(env('API_URL') . '/api/v1/company?name=' . $company_name);
+            $body = collect(json_decode($response->body(), true));
+
+            $data['company'] = $body;
+            $data['title'] = $body->isEmpty() ? null : $body['name'];
+        }
 
         return view('auth.login', compact('data'));
     }
